@@ -1,0 +1,248 @@
+{
+    "company_code": "000026",
+    "festivita_mobili": "",
+    "festivita_fisse": {
+        "01/01": true,
+        "06/01": true,
+        "25/04": true,
+        "01/05": true,
+        "02/06": true,
+        "15/08": true,
+        "04/10": true,
+        "01/11": true,
+        "08/12": true,
+        "25/12": true,
+        "26/12": true
+    },
+    "employees": {
+        "Alessandra Licari": "002076",
+        "Alessandra Perone": "002338",
+        "Alessandra Piccaluga": "002579",
+        "Alessandro Monte": "000258",
+        "Alex Garruto": "002055",
+        "Aloise Vallone": "002796",
+        "Ambra Challier": "001884",
+        "Andrea Dell'Orto": "000253",
+        "Andrea Garlisi": "002070",
+        "Angela Fazari": "000254",
+        "Angela Maio": "002311",
+        "Antonella Dutto": "002482",
+        "Arianna Matassa": "002527",
+        "Bartolomeo Stellato": "000263",
+        "Beatrice No\u00e8": "001811",
+        "Biagia Straci": "002081",
+        "Bruno Pinci": "001783",
+        "Carmen Spinelli": "001686",
+        "Cessare Andree Guillermo Acosta Bautista": "002237",
+        "Chiara Casini": "002456",
+        "Cinzia Nieddu": "002717",
+        "Cinzia Sollima": "001772",
+        "Clara Ghione": "002698",
+        "Daniele Dominique Marotta": "002646",
+        "Davide Bonomo": "002332",
+        "Davide Labella": "002499",
+        "Denise Tartaglia": "002025",
+        "Desire\u00e8 Bonocore": "002292",
+        "Dimitrije Petrusic": "002639",
+        "Domenico Dario Talarico": "001925",
+        "Domenico Montesanti": "002054",
+        "Edoardo Dore": "002723",
+        "Edoardo Santullo": "002298",
+        "Elena Adele Lina Accortanzo": "002107",
+        "Elia Bellei": "002702",
+        "Elisa Falcioni": "002611",
+        "Emanuele Depetris": "002709",
+        "Emanuele Galbato": "002714",
+        "Erika Gariglio": "002102",
+        "Fabrizio Bugg\u00e8": "001977",
+        "Federico Brero": "000245",
+        "Federico Nunnari": "002164",
+        "Federico Pernice": "002250",
+        "Florida Canaj": "001927",
+        "Fofie Ermand Teuyo": "002390",
+        "Francesca Luppino": "002719",
+        "Francesca Scarrone": "002312",
+        "Francesco Bonomo": "002562",
+        "Gabriele Anselmi": "001829",
+        "Gabriele Palermo": "001894",
+        "Gaetano Zeoli": "002045",
+        "Georgiana Malihin": "002746",
+        "Giacomo Cannata": "002633",
+        "Giacomo Ramponi": "001471",
+        "Giacomo Terrando": "000264",
+        "Giancarlo Romani": "001828",
+        "Gioele Barile": "002686",
+        "Giorgio Demaria": "002220",
+        "Giovanni De Luca": "002529",
+        "Giulia Sozzani": "002168",
+        "Giuseppina Padula": "002355",
+        "Ivana Mattea Lisitano": "002590",
+        "Jaime Jesus Aymerich Blanco": "002053",
+        "Jeremias Rodolfo Leano": "001620",
+        "Jessica D'Altilia": "000250",
+        "Jhonatan Alexander Leon Mariano": "002158",
+        "Juan Pablo Fierro Carrasco": "002627",
+        "Lorenzo Marinelli": "001806",
+        "Loris Di Renzo": "002720",
+        "Marco Casale": "002197",
+        "Marco Martucci": "002068",
+        "Marco Politi": "002387",
+        "Marco Tognetti": "002715",
+        "Marsild Sulkja": "001920",
+        "Martina Muscar\u00e0": "002304",
+        "Maryam Moeinvaziri": "002442",
+        "Matteo Albesano": "001976",
+        "Matteo Basso": "001863",
+        "Mattia Bont": "001805",
+        "Micaela Di Matteo": "002264",
+        "Michel Como": "000249",
+        "Michele Bergese": "001658",
+        "Michele Perna": "002103",
+        "Miriam Vullo": "001803",
+        "Morena Lo Duca": "002701",
+        "Nicola Cardona": "001833",
+        "Oleksandryna Bukatova": "002217",
+        "Paola Milella": "002671",
+        "Paola Zotta": "001978",
+        "Paolo Guarino": "001904",
+        "Paolo Serafino": "002093",
+        "Pietro Barberis": "002609",
+        "Rebecca Puttinato": "002433",
+        "Riccardo Bardinella": "000242",
+        "Roberta Lingua": "002064",
+        "Sabato Russo": "001685",
+        "Sabrina Antonacci": "002423",
+        "Sabrina Tornese": "001807",
+        "Sarah Licitra": "002117",
+        "Sardorbek Niyozov": "002378",
+        "Serena Pochettino": "002503",
+        "Serena Sardone": "002408",
+        "Simone Cussa": "002526",
+        "Soha Hijazi": "002589",
+        "Sonia Fraccacreta": "001856",
+        "Sonia Napoletano": "001990",
+        "Stefania Del Giorno": "001542",
+        "Stefano Baggio": "000241",
+        "Taraneh Ostad Mohammad Memar": "001835",
+        "Thomas Stefano Italiano": "002647",
+        "Tiziana Murru": "002558",
+        "Valentina Allegra": "002339",
+        "Valentina Stefano": "002547",
+        "Vanessa Molfetta": "002219",
+        "Veronica Ruccella": "001760",
+        "Veronica Yepes Cardona": "002500",
+        "Viviana Monasterolo": "002043",
+        "Wael Douhaymi": "002341",
+        "Yara Ayrouth": "001843"
+    },
+    "causals": {
+        "Compensazione degli straordinari": {
+            "code": "RC",
+            "festivity_action": "ignora"
+        },
+        "Congedo maternit\u00e0 obbligatoria": {
+            "code": "MO",
+            "festivity_action": "ignora"
+        },
+        "Congedo matrimoniale": {
+            "code": "CM",
+            "festivity_action": "ignora"
+        },
+        "Congedo parentale": {
+            "code": "CP",
+            "festivity_action": "ignora"
+        },
+        "Congedo paternit\u00e0 obbligatorio": {
+            "code": "PO",
+            "festivity_action": "ignora"
+        },
+        "Donazione sangue": {
+            "code": "DS",
+            "festivity_action": "ignora"
+        },
+        "Evento Pininfarina Moncali": {
+            "code": "EV",
+            "festivity_action": "ignora"
+        },
+        "Ex-festivit\u00e0": {
+            "code": "EF",
+            "festivity_action": "ignora"
+        },
+        "Ferie": {
+            "code": "FP",
+            "festivity_action": "ignora"
+        },
+        "Formazione aziendale": {
+            "code": "FA",
+            "festivity_action": "ignora"
+        },
+        "Job Fair PMI - Politecnico di Torino": {
+            "code": "JF",
+            "festivity_action": "ignora"
+        },
+        "Lutto": {
+            "code": "LU",
+            "festivity_action": "ignora"
+        },
+        "Malattia": {
+            "code": "M1",
+            "festivity_action": "ignora"
+        },
+        "Permessi non retribuiti": {
+            "code": "PN",
+            "festivity_action": "ignora"
+        },
+        "Permessi per allattamento": {
+            "code": "AL",
+            "festivity_action": "ignora"
+        },
+        "Permessi precedenti sessione esame": {
+            "code": "PE",
+            "festivity_action": "ignora"
+        },
+        "Permessi retribuiti": {
+            "code": "PR",
+            "festivity_action": "ignora"
+        },
+        "Permessi studio": {
+            "code": "ST",
+            "festivity_action": "ignora"
+        },
+        "Permesso L.104": {
+            "code": "LH",
+            "festivity_action": "ignora"
+        },
+        "Permesso per esame": {
+            "code": "PE",
+            "festivity_action": "ignora"
+        },
+        "ROL": {
+            "code": "RO",
+            "festivity_action": "ignora"
+        },
+        "Sciopero": {
+            "code": "SC",
+            "festivity_action": "ignora"
+        },
+        "Servizi generali": {
+            "code": "SG",
+            "festivity_action": "ignora"
+        },
+        "Sopralluoghi": {
+            "code": "SL",
+            "festivity_action": "ignora"
+        },
+        "Trasferta": {
+            "code": "TR",
+            "festivity_action": "ignora"
+        },
+        "Visita medica aziendale": {
+            "code": "VM",
+            "festivity_action": "ignora"
+        },
+        "evento aziendale": {
+            "code": "EA",
+            "festivity_action": "ignora"
+        }
+    }
+}
