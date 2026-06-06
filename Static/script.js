@@ -1,15 +1,14 @@
 // Static/script.js
 
-const API_BASE = 'http://127.0.0.1:5000/api';
+const API_BASE = '/api';
 let uploadedFilesStore = []; // Array in memoria RAM per stoccare i file trascinati dall'utente
 
 // ===== APPLICAZIONE PATTERN: ESTRAZIONE TENANT ID DALL'URL =====
 function getTenantIdFromUrl() {
     const pathParts = window.location.pathname.split('/');
-    // Se l'URL è /azienda/cliente_a, l'elemento dopo 'azienda' è il nostro tenant_id
     const empresaIdx = pathParts.indexOf('azienda');
     if (empresaIdx !== -1 && pathParts[empresaIdx + 1]) {
-        return pathParts[empresaIdx + 1];
+        return decodeURIComponent(pathParts[empresaIdx + 1]);
     }
     return null;
 }
@@ -44,12 +43,10 @@ function initDragAndDropLogic() {
     const dropZone = document.getElementById('dropZoneJob');
     if (!dropZone) return;
 
-    // Evita che il browser apra il file Excel se viene trascinato erroneamente fuori dal box
     ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
         dropZone.addEventListener(eventName, (e) => { e.preventDefault(); e.stopPropagation(); }, false);
     });
 
-    // Effetti grafici al passaggio del mouse con il file
     ['dragenter', 'dragover'].forEach(eventName => {
         dropZone.addEventListener(eventName, () => dropZone.classList.add('filled'), false);
     });
@@ -57,7 +54,6 @@ function initDragAndDropLogic() {
         dropZone.addEventListener(eventName, () => dropZone.classList.remove('filled'), false);
     });
 
-    // Intercettazione del rilascio dei file (Drop)
     dropZone.addEventListener('drop', (e) => {
         const dt = e.dataTransfer;
         const files = dt.files;
@@ -76,23 +72,20 @@ function handleFileSelectionJob(e) {
 function processSelectedFiles(files) {
     if (files.length === 0) return;
 
-    // Filtriamo e accettiamo solo estensioni compatibili con il motore di calcolo
     const validExtensions = ['.xlsx', '.xls', '.csv'];
     
     for (let i = 0; i < files.length; i++) {
         const file = files[i];
         const filename = file.name.toLowerCase();
-        const isValid = validExtensions.some(ext => filename.endswith(ext));
+        const isValid = validExtensions.some(ext => filename.endsWith(ext));
         
         if (isValid) {
-            // Verifichiamo se il file è già stato inserito per evitare duplicati in RAM
             if (!uploadedFilesStore.some(f => f.name === file.name && f.size === file.size)) {
                 uploadedFilesStore.push(file);
             }
         }
     }
 
-    // Aggiorna lo stato testuale dell'area di caricamento
     const statusText = document.getElementById('uploadStatusText');
     if (uploadedFilesStore.length > 0) {
         statusText.innerHTML = `📚 <b>${uploadedFilesStore.length} file pronti</b> per l'invio`;
@@ -146,7 +139,7 @@ function clearJobEmployees() {
 // ===== CHIAMATE API: CARICAMENTO E SALVATAGGIO CONFIGURAZIONI TRAMITE TENANT ID =====
 async function loadJobConfig(tenantId) {
     try {
-        const res = await fetch(`${API_BASE}/job/config/${tenantId}`);
+        const res = await fetch(`${API_BASE}/job/config/${encodeURIComponent(tenantId)}`);
         const data = await res.json();
         if (data.success && data.config) {
             Object.entries(data.config.employees || {}).forEach(([name, code]) => addJobEmployeeRow(name, code));
@@ -171,31 +164,31 @@ async function saveJobConfig() {
 
     document.querySelectorAll('#jobEmployeeBody tr').forEach(row => {
         const name = row.querySelector('.emp-name').value.trim();
-        const code = row.querySelector('.code-field').value.trim();
+        const code = row.querySelector('.emp-code').value.trim();
         if (name) configToSave.employees[name] = code;
     });
     
     document.querySelectorAll('#jobCausalBody tr').forEach(row => {
         const name = row.querySelector('.caus-name').value.trim();
-        const code = row.querySelector('.code-field').value.trim();
+        const code = row.querySelector('.caus-code').value.trim();
         const festivity = row.querySelector('.caus-festivity').value;
         if (name) configToSave.causals[name] = { code: code, festivity_action: festivity };
     });
 
     try {
-        const res = await fetch(`${API_BASE}/job/config/${tenantId}`, {
+        const res = await fetch(`${API_BASE}/job/config/${encodeURIComponent(tenantId)}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ config: configToSave })
         });
         const data = await res.json();
-        if (data.success) showMessage('Anagrafica tenant salvata nel Cloud!', 'success');
+        if (data.success) showMessage('Anagrafica tenant salvata!', 'success');
     } catch(e) {
         showMessage('Errore durante il salvataggio dei dati.', 'error');
     }
 }
 
-// ===== CHIAMATA API SINCRENA: CARICAMENTO MULTIPART DI FILE FISICI REALI =====
+// ===== CHIAMATA API: CARICAMENTO MULTIPART DI FILE FISICI REALI =====
 async function startJobConversion() {
     const tenantId = getTenantIdFromUrl();
     if (!tenantId) return;
@@ -204,7 +197,6 @@ async function startJobConversion() {
         return showMessage('Trascina o seleziona almeno un file prima di procedere!', 'error');
     }
 
-    // Effettua un salvataggio preventivo dell'anagrafica per consistenza dei dati
     await saveJobConfig();
 
     const btn = document.getElementById('btnStartJob');
@@ -212,10 +204,8 @@ async function startJobConversion() {
     btn.textContent = '⏳ Elaborazione in RAM...';
 
     try {
-        // Prepariamo l'oggetto contenitore standard multipart per inviare file via HTTP
         const fd = new FormData();
         
-        // Appendiamo tutti i file reali immagazzinati in memoria RAM nel browser
         uploadedFilesStore.forEach(file => {
             fd.append('files', file);
         });
@@ -223,21 +213,18 @@ async function startJobConversion() {
         fd.append('job_dynamic_hours_ore', document.getElementById('jobDynamicHoursOre').checked);
         fd.append('job_dynamic_hours_turni', document.getElementById('jobDynamicHoursTurni').checked);
 
-        // Invio dei dati in una transazione sincrona e lineare
-        const res = await fetch(`${API_BASE}/start-conversion/${tenantId}`, { method: 'POST', body: fd });
+        const res = await fetch(`${API_BASE}/start-conversion/${encodeURIComponent(tenantId)}`, { method: 'POST', body: fd });
         const data = await res.json();
         
         if (data.success) {
             showMessage('Elaborazione completata! Download in corso...', 'success');
             
-            // Creazione di un link fittizio al volo per scaricare la stringa di testo ricevuta
             const blob = new Blob([data.fileContent], { type: 'text/plain' });
             const link = document.createElement('a');
             link.href = window.URL.createObjectURL(blob);
             link.download = data.fileName;
             link.click();
             
-            // Reset della memoria di caricamento
             uploadedFilesStore = [];
             document.getElementById('uploadStatusText').textContent = 'Trascina qui i file Excel o CSV';
             document.getElementById('dropZoneJob').style.borderColor = '#cbd5e1';
@@ -245,7 +232,7 @@ async function startJobConversion() {
             showMessage(data.message, 'error');
         }
     } catch(e) {
-        showMessage(`Errore di rete Cloud: ${e.message}`, 'error');
+        showMessage(`Errore di rete: ${e.message}`, 'error');
     } finally {
         btn.disabled = false;
         btn.textContent = '⚡ Genera Tracciato Paghe';
