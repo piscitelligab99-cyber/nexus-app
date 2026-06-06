@@ -187,3 +187,11 @@ def find_folder_by_name(folder_name):
             for item in path.iterdir():
                 if item.is_dir() and item.name == folder_name: return str(item)
     return None
+
+def fmt_hours(ore: float) -> str:
+    """Formatta un valore decimale di ore in stringa HH:MM leggibile."""
+    if ore is None or ore != ore:  # None o NaN
+        return "0:00"
+    ore_int = int(ore)
+    min_int = int(round((ore - ore_int) * 60))
+    return f"{ore_int}:{min_int:02d}"
