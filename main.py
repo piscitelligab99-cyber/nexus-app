@@ -2,6 +2,7 @@
 
 from flask import request, jsonify, send_file, render_template
 import os, json, io
+import pandas as pd  # Importazione fondamentale per l'elaborazione dei dataframe in RAM
 from pathlib import Path
 
 # Calcolo del percorso assoluto del server
@@ -99,14 +100,12 @@ def start_conversion(tenant_id):
             processed_mem_files.append(InMemoryFile(file.filename, file_buffer))
 
         # 4. Mock temporaneo di un task_id interno per retrocompatibilità con run_jobsistemi_conversion
-        # Nota: Essendo sincrono, creiamo al volo lo stato nel dizionario e lo distruggiamo subito dopo
         from app.globals import conversion_tasks
         mock_task_id = "sync_web_task"
         conversion_tasks[mock_task_id] = {'message': 'Elaborazione in RAM...'}
 
         # Intercettiamo i metodi interni di helpers/logic che cercavano file sul disco, 
         # iniettando l'apertura in-memory personalizzata
-        # Modifichiamo leggermente l'esecuzione logica per passargli la nostra astrazione in RAM
         res = run_jobsistemi_conversion_web_adapted(
             mock_task_id, processed_mem_files, effective_config, tenant_id, job_dynamic_hours_ore, job_dynamic_hours_turni
         )
@@ -119,7 +118,6 @@ def start_conversion(tenant_id):
             return jsonify({'success': False, 'message': 'Errore durante la generazione del tracciato logico.'}), 500
 
         # 5. RESTITUZIONE DIRETTA DEL FILE DI TESTO NELLA RISPOSTA HTTP
-        # L'architettura è stateless: non scriviamo nulla su disco, rispondiamo direttamente con i dati calcolati
         return jsonify({
             'success': True,
             'fileName': f"tracciato_job_{tenant_id}.txt",
@@ -146,7 +144,7 @@ def load_tenant_config_internal(tenant_id):
 
 def run_jobsistemi_conversion_web_adapted(task_id, mem_files, effective_config, company, job_dynamic_hours_ore, job_dynamic_hours_turni):
     """
-    Adattatore Web ad alte prestazioni basato sulla tua vecchia funzione logic.py.
+    Adattatore Web ad alte prestazioni basato sulla vecchia funzione logic.py.
     Sostituisce la lettura da file fisico con la lettura atomica in RAM.
     """
     from app.core.helpers import normalize_emp_name, get_giustificativo_code, extract_giustificativo_hours, calculate_hours_from_orario, ore_to_decimal
@@ -168,11 +166,9 @@ def run_jobsistemi_conversion_web_adapted(task_id, mem_files, effective_config, 
 
     for f in mem_files:
         try:
-            # Usiamo la nostra astrazione in RAM invece del vecchio metodo che cercava il percorso su disco
             df = f.open_dataframe(header=0)
             if len(df) <= 4: continue
             
-            # Estrazione nome dipendente dal nome del file (es: Mario_Rossi_esportazione.xlsx -> Mario Rossi)
             name_raw = f.stem.split('_')[0].split('-')[0].title()
             norm_name = normalize_emp_name(name_raw)
             
@@ -184,7 +180,6 @@ def run_jobsistemi_conversion_web_adapted(task_id, mem_files, effective_config, 
             processed_emps += 1
             header_row = df.iloc[3]
             
-            # Mappatura indici colonne
             from app.core.helpers import find_column_index, find_column_index_contains
             idx_data = find_column_index(header_row, "Data") or find_column_index_contains(header_row, 'data')
             idx_ore = find_column_index(header_row, "Ore Lavorate") or find_column_index_contains(header_row, 'ore lavorate')
@@ -243,3 +238,9 @@ def run_jobsistemi_conversion_web_adapted(task_id, mem_files, effective_config, 
             'ore': round(total_ore_count, 2)
         }
     }
+
+# ===== LOGICA DI PORT BINDING PER GUNICORN / CLOUD =====
+if __name__ == '__main__':
+    # Legge la porta dinamica assegnata dal server di Render. In locale usa la 5000.
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host='0.0.0.0', port=port)
