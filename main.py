@@ -1,6 +1,7 @@
 # main.py
 
 import sys, traceback
+from urllib.parse import unquote
 
 print("=== AVVIO MAIN.PY ===", flush=True)
 
@@ -44,22 +45,25 @@ except Exception as e:
     sys.exit(1)
 
 # ===== ROTTA MULTI-TENANT DINAMICA =====
-@app.route('/azienda/<tenant_id>')
+@app.route('/azienda/<path:tenant_id>')
 def index(tenant_id):
+    tenant_id = unquote(tenant_id)
     cfg = load_tenant_config_internal(tenant_id)
     if not cfg:
         return f"❌ Errore Architetturale: Il tenant '{tenant_id}' non è censito a sistema.", 404
     return render_template('index.html')
 
-@app.route('/api/job/config/<tenant_id>', methods=['GET'])
+@app.route('/api/job/config/<path:tenant_id>', methods=['GET'])
 def get_tenant_config(tenant_id):
+    tenant_id = unquote(tenant_id)
     cfg = load_tenant_config_internal(tenant_id)
     if not cfg:
         return jsonify({'success': False, 'message': 'Tenant non trovato'}), 404
     return jsonify({'success': True, 'config': cfg})
 
-@app.route('/api/job/config/<tenant_id>', methods=['POST'])
+@app.route('/api/job/config/<path:tenant_id>', methods=['POST'])
 def save_tenant_config(tenant_id):
+    tenant_id = unquote(tenant_id)
     try:
         data = request.json
         if not data or 'config' not in data:
@@ -68,12 +72,13 @@ def save_tenant_config(tenant_id):
         path = os.path.join(CONFIG_JOB_DIR, f'{tenant_id}.json')
         with open(path, 'w', encoding='utf-8') as f:
             json.dump(data['config'], f, indent=4)
-        return jsonify({'success': True, 'message': 'Configurazione blindata e salvata!'})
+        return jsonify({'success': True, 'message': 'Configurazione salvata!'})
     except Exception as e:
         return jsonify({'success': False, 'message': f'Errore di scrittura: {str(e)}'}), 500
 
-@app.route('/api/start-conversion/<tenant_id>', methods=['POST'])
+@app.route('/api/start-conversion/<path:tenant_id>', methods=['POST'])
 def start_conversion(tenant_id):
+    tenant_id = unquote(tenant_id)
     try:
         uploaded_files = request.files.getlist('files')
         if not uploaded_files or len(uploaded_files) == 0 or uploaded_files[0].filename == '':
