@@ -9,7 +9,9 @@ last_conversion_data = None
 
 # ===== COSTANTI GLOBALI =====
 # Manteniamo esclusivamente la cartella dedicata a JOB Sistemi
-CONFIG_JOB_DIR = 'Configurazioni/Config_Job'
+import os
+
+CONFIG_JOB_DIR = os.environ.get('CONFIG_JOB_DIR', '/tmp/Configurazioni/Config_Job')
 
 # ===== DIZIONARI E SET CONDIVISI =====
 # Questa lista di giustificativi serve per i calcoli orari interni (es. ferie, malattie)
